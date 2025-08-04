@@ -1,11 +1,11 @@
 
 # SunPower Web Monitor
 
-The **`PVS Solar Energy Dashboard`** is a web-based viewer for monitoring data from your SunPower system. It reports the model and serial number of every provisioned device in the system. Additionally, it displays power production, power consumption, and mains voltages. Each panel in your solar array also reports its DC volts, DC amps, and microinverter AC voltages.
+The **PVS Solar Energy Dashboard** is a web-based viewer for monitoring data from your SunPower system. It reports the model and serial number of every provisioned device in the system. Additionally, it displays power production, power consumption, and mains voltages. Each panel in your solar array also reports its DC volts, DC amps, and microinverter AC voltages.
 
-> ⚠️ *Note: Battery storage status is **not** currently supported. The author plans to add this feature in the future—once a generous anonymous donor pays for the installation of a `SunVault` at the author’s residence. If you know such a person, please invite them to check out this project!*
+> ⚠️ Note: Battery storage status is **not** currently supported. The author plans to add this feature in the future—once a generous anonymous donor pays for the installation of a *SunVault* at the author’s residence. If you know such a person, please invite them to check out this project!
 
-> 🔗 From this point forward, the PVS Solar Energy Dashboard will simply be referred to as the **`Dashboard`.**
+> 🔗 From this point forward, the PVS Solar Energy Dashboard will simply be referred to as the **Dashboard**.
 
 ## SunPower Bankruptcy
 
@@ -23,20 +23,32 @@ In addition to displaying useful real-time data, the Dashboard can help with sys
 
 However, the Dashboard **cannot** be used to commission a SunPower system or provision new devices. As of 2024, those tasks require the proprietary PVS Management App and approval from SunPower or SunStrong.
 
-> 📝If your goal is to integrate your SunPower system into a home automation system, such as ``Home Assistant`` (HA), then keep in mind that this project is NOT needed for that. However, the Dashboard can certainly be used while you prepare your HA integration.
+> 📝If your goal is to integrate your SunPower system into a home automation system, such as *Home Assistant* (HA), then keep in mind that this project is NOT needed for that. However, the Dashboard can certainly be used while you prepare your HA integration.
 
 ## PVS Gateway
 
 <img style="padding-right: 15px; padding-bottom: 5px;" align="right" src="images/PVS5_1.png" width="150">
 <img style="padding-right: 15px; padding-bottom: 5px;" align="right" src="images/PVS6_1.png" width="150">
 
-The Dashboard has been tested with the PVS6 gateway and is expected to be compatible with the older PVS5 model as well. For simplicity, both models are referred to as **`PVS`** (Power Visualization System) in this document.
+The Dashboard has been tested with the PVS6 gateway and is expected to be compatible with the older PVS5 model as well. For simplicity, both models are referred to as **PVS** (Power Visualization System) in this document.
 
 > 📝 The PVS is a data logger and gateway device used for solar system monitoring, metering, and control.
 
 To retrieve data, a direct Ethernet connection is required. **Wi-Fi cannot be used.**
 
 Inside the PVS are two Ethernet ports (LAN1 & LAN2) and other RJ45 jacks that **are not Ethernet**. Be cautious and use the correct port!
+
+## LAN1: Dashboard Data
+
+**LAN1** is the port that enables Dashboard functionality.
+
+It was originally intended for installer use. Unfortunately, SunPower disabled the built-in PVS Management App. It was a web-based commissioning interface that allowed installers to provision or repair systems. Today, those tasks require a proprietary installer's App.
+
+Thankfully, the LAN1 **API** remains functional.
+
+The Dashboard webpage queries this API using IP address *172.27.153.1* on LAN1. This is a private network address, separated from the customer’s home network, which is why a direct Ethernet connection is required.
+
+> 🔗 Note: The URL *www.sunpowerconsole.com* has been disabled by SunPower. It was an alias for the PVS’s internal nameserver at *172.27.153.1*. You must now use the IP address directly: [http://172.27.153.1](http://172.27.153.1).
 
 ## LAN2: Customer Cloud Data
 
@@ -47,24 +59,14 @@ The two Ethernet ports have different purposes:
 
 However, this project uses a different port for Dashboard data, so LAN2 is **not our concern**.
 
-## LAN1: Dashboard Data
-
-**LAN1** is the port that enables Dashboard functionality.
-
-It was originally intended for installer use. Unfortunately, SunPower disabled the built-in web-based commissioning interface that allowed installers to provision or repair systems. Today, those tasks require the proprietary PVS Management App.
-
-Thankfully, the LAN1 **API** remains functional.
-
-The Dashboard webpage queries this API using IP address `172.27.153.1` on LAN1. This is a private network address, separated from the customer’s home network, which is why a direct Ethernet connection is required.
-
-> 🔗 *Note: The URL `www.sunpowerconsole.com` has been disabled by SunPower. It was an alias for the PVS’s internal nameserver at `172.27.153.1`. You must now use the IP address directly: [http://172.27.153.1](http://172.27.153.1).*
-
 ## Ethernet Cable Connection
 
-Rather than repeating installation steps here, please refer to the official PVS installation guides for instructions on connecting the LAN1 Ethernet cable:
+Rather than repeating installation steps here, please refer to the official PVS installation guides for information on where to connect the LAN1 Ethernet cable:
 
 - **PVS6**: [Click to view](resources/PVS6_Installation1.pdf)
 - **PVS5**: [Click to view](resources/PVS5_Installation1.pdf)
+> 🔗 Note: The latest PVS6 hardware version will require a USB-to-Ethernet adapter (Dongle). Details are discussed in the PVS6 installation manual.
+
 
 ## Ethernet Test
 
@@ -72,18 +74,18 @@ Now that you have the PVS connected to your PC, it's time to check that the Ethe
 
 1. Launch your favorite browser and visit URL http://172.27.153.1
 
-2. Confirm that a ``403 Forbidden`` error is displayed. It means that the IP is valid, but further access is disabled by SunPower. Despite sounding grim, the 403 error is good news.
+2. Confirm that a *403 Forbidden* error is displayed. It means that the IP is valid, but further access is disabled by SunPower. Despite sounding grim, the 403 error is good news.
 > ⚠️If a Connection Timeout occurs then there is a problem with your Ethernet configuration or connection.
 
-3. Next, visit the following URL and confirm it replies with a devices list:
+3. Next, visit the following URL and confirm it replies with a *devices* report:
 http://172.27.153.1:8080/cgi-bin/dl_cgi?Command=DeviceList
 
-4. If a ```devices``` report appears then you are ready to try the Dashboard. Congratulations, you're almost there!
+4. If the report appears then you are ready to try the Dashboard. Congratulations, you're almost there!
 > 🔗 For those interested in using the Dashboard from your existing wireless network, please see the [FAQ](#faq) section at the bottom. But for now, continue with the next section.
 
 ## Dashboard File Installation
 
-The Dashboard is a single HTML file. Save [solar_dashboard.html](https://github.com/thomastech/SunPower-Web-Monitor/blob/main/html/solar_dashboard.html) on your PC desktop. Alternatively, store it in a subfolder and create a desktop shortcut for quick access.
+The Dashboard is a single HTML file. Save [solar_dashboard.html](https://github.com/thomastech/SunPower-Web-Monitor/releases/download/html/solar_dashboard.html) on your PC desktop. Alternatively, store it in a subfolder and create a desktop shortcut for quick access.
 
 > 🔗 These instructions are for Windows users. Other operating systems may slightly differ.
 
@@ -107,7 +109,7 @@ Some basic information:
 
 ### Power Performance
 
-The ``Power Performance`` section provides the following information:
+The *Power Performance* section provides the following information:
 
 **Lifetime Solar:** Total accumulated power production (KWH) since system installation.
 
@@ -121,7 +123,7 @@ The ``Power Performance`` section provides the following information:
 
 ### System Voltage
 
-The ``System Voltage`` section provides the following information:
+The *System Voltage* section provides the following information:
 
 **System Voltage L1+L2:** The solar system's AC mains line voltage as measured across the L1 & L2 phase legs. Nominal is 240VAC.
 
@@ -133,7 +135,7 @@ The ``System Voltage`` section provides the following information:
 
 ### Inverter Panel Grid
 
-The ``Inverter Panel Grid`` shows details for each solar panel in the array(s). Panels are normally blue but will change to yellow if they have significantly lower production wattage (<80%) than other panels.
+The *Inverter Panel Grid* shows details for each solar panel in the array(s). Panels are normally blue but will change to yellow if they have significantly lower production wattage (<80%) than other panels.
 
 **Watts:** Instantaneous production wattage of the panel.
 
@@ -147,11 +149,13 @@ The ``Inverter Panel Grid`` shows details for each solar panel in the array(s). 
 
 **🌡️ (temperature):** The temperature of the solar panel.
 
-**✔ (status):** The status of the solar panel. Reports either ``Working`` or ``Error.`` An Error typically means there is insufficient sunlight to produce power.
+**✔ (status):** The status of the solar panel. Reports either *Working* or *Error.* An Error typically means there is insufficient sunlight to produce power.
 
 ---
 
 ### System Information
+
+The *System Information* section provides the following information:
 
 **Gateway:** The gateway model description.
 
@@ -169,15 +173,21 @@ The ``Inverter Panel Grid`` shows details for each solar panel in the array(s). 
 
 **Panel ID:** SunPower's customer identification number.
 
-**Consumption CT:** The subtype assigned to the consumption transformer (CT). The consumption feature is disabled if it reports "NOT_USED."
+**Consumption CT:** The subtype assigned to the consumption Current Transformer (CT). Consumption monitoring is disabled if it reports "NOT_USED."
 
 ## [FAQ](faq)
 
+### 1.
 **Q.** Can I connect the PVS to my local network so that I can use the Dashboard from multiple devices? It would be convenient to access it via my WiFi router, especially from a browser on my smartphone.
+
 **A.** Yes, this is a great way to use the Dashboard. For details, please review this document: [Local Network Setup.](./docs/local_network.md)
 
+### 2.
 **Q.** I followed the [Local Network Setup](./docs/local_network.md) instructions and have successfully connected the PVS to my home's network. It works great when I am at home. But how can I use the Dashboard from another location, such as when I am traveling?
+
 **A.** What you are describing could be accomplished with your router's port forwarding feature. Most IT professionals don't promote doing this due to the security risks from bad actors. Of course, there are protection measures that can be used, but details are beyond the scope of this project. Honestly, SunPower's cloud-based monitoring app (if it still works for you) is a recommended solution for basic remote monitoring. But even cloud connections have risk, so choose your poison wisely.
 
+### 3.
 **Q.** Why doesn't the Dashboard show daily KWH or past history? It would be useful to see how much power was produced and/or consumed each day.
+
 **A.** It sounds like you need to check out the [SunPower add-on for Home Assistant](https://github.com/krbaker/hass-sunpower).
