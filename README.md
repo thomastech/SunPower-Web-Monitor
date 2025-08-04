@@ -52,7 +52,7 @@ Thankfully, the LAN1 **API** remains functional.
 
 The Dashboard webpage queries this API using IP address *172.27.153.1* on LAN1. This is a private network address, separated from the customer’s home network, which is why a direct Ethernet connection is required.
 
-> 🔗 Note: The URL *www.sunpowerconsole.com* has been disabled by SunPower. It was an alias for the PVS’s internal nameserver at *172.27.153.1*. You must now use the IP address directly: [http://172.27.153.1](http://172.27.153.1).
+> 🔗 Note: The URL *www.sunpowerconsole.com* has been disabled by SunPower. It was an alias for the PVS’s internal nameserver at *172.27.153.1*. Your browser must now use the IP address as the URL ([http://172.27.153.1](http://172.27.153.1)). Only http is accepted, https is not supported.
 
 ### LAN2: Customer Cloud Data
 
@@ -74,15 +74,17 @@ Rather than repeating installation steps here, please refer to the official PVS 
 
 Now that you have the PVS connected to your PC, it's time to check that the Ethernet connection is working. As follows:
 
-1. Launch your favorite browser and visit URL http://172.27.153.1
+1. Turn off the PC's WiFi. Confirm it is off, otherwise the LAN1 test (and the Dashboard) will fail.
 
-2. Confirm that a *403 Forbidden* error is displayed. It means that the IP is valid, but further access is disabled by SunPower. Despite sounding grim, the 403 error is good news.
-> ⚠️If a Connection Timeout occurs then there is a problem with your Ethernet configuration or connection.
+2. Launch your favorite browser and visit URL http://172.27.153.1
 
-3. Next, visit the following URL and confirm it replies with a *devices* report:
+3. Confirm that a *403 Forbidden* error is displayed. It means that the IP is valid, but further access is disabled by SunPower. Despite sounding grim, the 403 error is good news.
+> ⚠️If a Connection Timeout occurs then there is a problem with your Ethernet configuration or connection. Be sure WiFi is turned off!
+
+4. Next, visit the following URL and confirm it replies with a *devices* report:</br>
 http://172.27.153.1:8080/cgi-bin/dl_cgi?Command=DeviceList
 
-4. If the report appears then you are ready to try the Dashboard. Congratulations, you're almost there!
+5. If the report appears then you are ready to try the Dashboard. Congratulations, you're almost there!
 > 🔗 For those interested in using the Dashboard from your existing wireless network, please see the [FAQ](#faq) section at the bottom. But for now, continue with the next section.
 
 ## Dashboard File Installation
@@ -93,7 +95,9 @@ The Dashboard is a single HTML file. Save [solar_dashboard.html](https://github.
 
 ## Solar Energy Dashboard: Basic Operation
 
-On a Windows PC the Dashboard can be launched by double-clicking the file (or shortcut). Here's a screenshot.
+On a Windows PC the Dashboard can be launched by double-clicking the file (or shortcut). Be sure WiFi is turned off!
+
+Here's a screenshot.
 
 <a href="images/dashboard1.png" target="_blank" style="text-align: center; display: block;">
   <img src="images/dashboard1.png" width="600" style="padding: 5px 15px 0 15px; display: block; margin: 0 auto;">
@@ -193,3 +197,8 @@ The *System Information* section provides the following information:
 **Q.** Why doesn't the Dashboard show daily KWH or past history? It would be useful to see how much power was produced and/or consumed each day.
 
 **A.** It sounds like you need to check out the [SunPower add-on for Home Assistant](https://github.com/krbaker/hass-sunpower).
+
+### 4.
+**Q.** I cannot connect to the VPS. I've tried everything. Help.
+
+**A.** Check again and confirm your PC's WiFi is turned off. If you are using a USB-to-Ethernet "Dongle" on your PVS6 then confirm it is an approved choice. The PVS6 installation manual shows the USB Dongle models that can be used.
