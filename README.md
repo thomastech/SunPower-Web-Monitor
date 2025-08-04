@@ -1,11 +1,11 @@
 
 # SunPower Web Monitor
 
-**`PVS Solar Energy Dashboard`** is a web-based viewer for monitoring data from your SunPower system. It reports the model and serial number of every provisioned device in the system. Additionally, it displays power production, power consumption, and mains voltages. Each panel in your solar array also reports its DC volts, DC amps, and microinverter AC voltages.
+The **`PVS Solar Energy Dashboard`** is a web-based viewer for monitoring data from your SunPower system. It reports the model and serial number of every provisioned device in the system. Additionally, it displays power production, power consumption, and mains voltages. Each panel in your solar array also reports its DC volts, DC amps, and microinverter AC voltages.
 
 > ⚠️ *Note: Battery storage status is **not** currently supported. The author plans to add this feature in the future—once a generous anonymous donor pays for the installation of a `SunVault` at the author’s residence. If you know such a person, please invite them to check out this project!*
 
-> 🔗 From this point forward, the PVS Solar Energy Dashboard will simply be referred to as the **`Dashboard`**.
+> 🔗 From this point forward, the PVS Solar Energy Dashboard will simply be referred to as the **`Dashboard`.**
 
 ## SunPower Bankruptcy
 
@@ -64,7 +64,7 @@ The Dashboard webpage queries this API using IP address `172.27.153.1` on LAN1. 
 Rather than repeating installation steps here, please refer to the official PVS installation guides for instructions on connecting the LAN1 Ethernet cable:
 
 - **PVS6**: [Click to view](resources/VPS6_Installation1.pdf)
-- **PVS5**: [Click to view](resources/VPS5_Installation1.pdf)
+- **PVS5**: [Click to view](resources/PVS5_Installation1.pdf)
 
 ## Ethernet Test
 
@@ -72,7 +72,7 @@ Now that you have the PVS connected to your PC, it's time to check that the Ethe
 
 1. Launch your favorite browser and visit URL http://172.27.153.1
 
-2. Confirm that a ``403 Forbidden`` error is displayed. It means that the IP is valid, but installer access is disabled by SunPower. Despite sounding grim, the 403 error is good news.
+2. Confirm that a ``403 Forbidden`` error is displayed. It means that the IP is valid, but further access is disabled by SunPower. Despite sounding grim, the 403 error is good news.
 > ⚠️If a Connection Timeout occurs then there is a problem with your Ethernet configuration or connection.
 
 3. Next, visit the following URL and confirm it replies with a devices list:
@@ -95,6 +95,7 @@ On a Windows PC the Dashboard can be launched by double-clicking the file (or sh
   <img src="images/dashboard1.png" width="600" style="padding: 5px 15px 0 15px; display: block; margin: 0 auto;">
   <div style="font-size: 14px; color: #fff; text-align: center;"><strong>Click for Larger View</strong></div>
 </a>
+</br>
 
 Some basic information:
 - Data is automatically refreshed every **15 seconds**.
