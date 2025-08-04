@@ -63,7 +63,7 @@ The Dashboard webpage queries this API using IP address `172.27.153.1` on LAN1. 
 
 Rather than repeating installation steps here, please refer to the official PVS installation guides for instructions on connecting the LAN1 Ethernet cable:
 
-- **PVS6**: [Click to view](resources/VPS6_Installation1.pdf)
+- **PVS6**: [Click to view](resources/PVS6_Installation1.pdf)
 - **PVS5**: [Click to view](resources/PVS5_Installation1.pdf)
 
 ## Ethernet Test
