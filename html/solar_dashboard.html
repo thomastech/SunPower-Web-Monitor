@@ -1,0 +1,294 @@
+<!--
+File:   solar_dashboard.html
+Author: ThomasB
+Vers:   1.1
+Origin: Jul-29-2025
+Update: Aug-02-2025
+github: https://github.com/thomastech
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PVS Solar Energy Dashboard</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f2f5f8;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: linear-gradient(to right, #01579b, #0288d1);
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    h1 {
+      margin: 0;
+      font-size: 1.8rem;
+    }
+    section {
+      padding: 1rem 2rem;
+    }
+    .section-title {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      color: #333;
+    }
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+    .card {
+      background: white;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .card svg {
+      width: 40px;
+      height: 40px;
+      margin-bottom: 0.5rem;
+    }
+    .label {
+      font-size: 0.95rem;
+      color: #555;
+    }
+    .value {
+      font-size: 1.6rem;
+      font-weight: bold;
+      color: #222;
+    }
+    .panels {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 0.5rem;
+    }
+    .panel {
+      background: #e0f7fa;
+      border-radius: 8px;
+      padding: 0.5rem;
+      text-align: center;
+      font-size: 1.1rem;
+    }
+    .footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.85rem;
+      color: #666;
+    }
+    button {
+      display: block;
+      margin: 1rem auto;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+    }
+    .system-info {
+      padding: 1rem 2rem;
+    }
+    .system-info .info-line {
+      font-size: 1rem;
+      margin: 0.25rem 0;
+    }
+    .net-icon {
+    stroke: var(--stroke-color);
+    }
+  </style>
+</head>
+<body>
+  <header>
+
+<h1 style="cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem;" onclick="fetchData()">
+  <span title="Click to refresh">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="#FFD700" xmlns="http://www.w3.org/2000/svg">
+      <path d="M6.76 4.84l-1.8-1.79L3.17 4.84 4.93 6.6 6.76 4.84zm10.45 14.32l1.79 1.8 1.79-1.8-1.8-1.79-1.78 1.79zM12 4V1h-1v3h1zm0 16v3h1v-3h-1zm8.49-8.49h3v-1h-3v1zM1 11.5v1h3v-1H1zm2.34 7.95l1.79-1.8-1.8-1.79-1.79 1.8 1.8 1.79zM17.25 6.75l1.79-1.79-1.8-1.8-1.79 1.8 1.8 1.79zM12 7a5 5 0 100 10 5 5 0 000-10z"/>
+    </svg>
+  </span>
+  PVS Solar Energy Dashboard
+</h1>
+
+  </header>
+
+  <section>
+    <div class="section-title">Power Performance</div>
+    <div class="dashboard" id="today"></div>
+  </section>
+
+  <section>
+    <div class="section-title">System Voltage</div>
+    <div class="dashboard" id="systemvolts"></div>
+  </section>
+
+  <section>
+    <div class="section-title">Inverter Panel Grid</div>
+    <div class="panels" id="panels"></div>
+  </section>
+
+  <section class="system-info">
+    <div class="section-title">System Information</div>
+    <div class="info-line" id="gateway"></div>
+    <div class="info-line" id="ip"></div>
+    <div class="info-line" id="serial"></div>
+    <div class="info-line" id="hwver"></div>
+    <div class="info-line" id="swver"></div>
+    <div class="info-line" id="state"></div>
+    <div class="info-line" id="memused"></div>
+    <div class="info-line" id="panid"></div>
+    <div class="info-line" id="ctdescr"></div>
+  </section>
+
+  <div class="footer" id="updated">Last updated: ...</div>
+  <button onclick="fetchData()">🔄 Refresh Now</button>
+
+  <script>
+   function getIpFromUrl(defaultIp) {
+    const params = new URLSearchParams(window.location.search);
+     for (const [key, value] of params.entries()) {
+       if (key.toLowerCase() === 'ip' && value) {
+         return value;
+       }
+     }
+     return defaultIp;
+    }
+
+    const IP_ADDR = getIpFromUrl("172.27.153.1");
+    const DEVICE_LIST = "/cgi-bin/dl_cgi?Command=DeviceList";
+    const URL = "http://" + IP_ADDR + DEVICE_LIST;
+    const REFRESH_INTERVAL = 15 * 1000;  // 15 secs refresh
+    //const REFRESH_INTERVAL = 15 * 60 * 1000; // 15 min refresh
+
+    async function fetchData() {
+      try {
+        const res = await fetch(URL);
+        const data = await res.json();
+        const devices = data.devices;
+
+        const meterP = devices.find(d => d.TYPE === "PVS5-METER-P");
+        const meterC = devices.find(d => d.TYPE === "PVS5-METER-C");
+        const gateway = devices.find(d => d.DEVICE_TYPE === "PVS");
+        const inverters = devices.filter(d => d.TYPE === "SOLARBRIDGE");
+
+        const productionKw = parseFloat(meterP?.p_3phsum_kw || 0);
+        const consumptionKw = parseFloat(meterC?.p_3phsum_kw || 0);
+        const netKw = productionKw - consumptionKw;
+        const lifetimeKwh = parseFloat(meterP?.net_ltea_3phsum_kwh || 0);
+        const voltageSystem = parseFloat(meterC?.v12_v || 0);
+        const voltageL1 = parseFloat(meterC?.v1n_v || 0);
+        const voltageL2 = parseFloat(meterC?.v2n_v || 0);
+        const updateTime = meterP?.CURTIME || "";
+        const netcolor = netKw >= 0 ? 'green' : 'red'; // Net Power Icon Color.
+        const prodcolor = productionKw > 0.1 ? 'yellow' : 'blue'; // Production Icon Color, blue if under 100W.
+
+        document.getElementById("today").innerHTML = `
+          <div class="card">
+            <svg fill="#3c5" viewBox="0 0 48 48"><path d="M24 6c-10.1 0-18 7.9-18 18s7.9 18 18 18 18-7.9 18-18-7.9-18-18-18zm0 32c-7.7 0-14-6.3-14-14s6.3-14 14-14 14 6.3 14 14-6.3 14-14 14z"/></svg>
+            <div class="label">Lifetime Solar</div>
+            <div class="value">${lifetimeKwh.toFixed(2)} kWh</div>
+          </div>
+          <div class="card">
+            <svg id="productionIcon" class="pout-icon" viewBox="0 0 48 48"><path d="M24 6c-10.1 0-18 7.9-18 18s7.9 18 18 18 18-7.9 18-18-7.9-18-18-18zm0 32c-7.7 0-14-6.3-14-14s6.3-14 14-14 14 6.3 14 14-6.3 14-14 14z"/></svg>
+            <div class="label">Solar Output</div>
+            <div class="value">${productionKw.toFixed(2)} kW</div>
+          </div>
+          <div class="card">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-7 7c0 2.386 1.154 4.435 3 5.742V17h8v-2.258c1.846-1.307 3-3.356 3-5.742a7 7 0 0 0-7-7z"/></svg>
+            <div class="label">Consumption</div>
+            <div class="value">${consumptionKw.toFixed(2)} kW</div>
+          </div>
+          <div class="card">
+            <svg id="netPowerIcon" class="net-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12l-2 2 2 2"/><path d="M16 12l2-2-2-2"/></svg>
+            <div class="label">Net Power</div>
+            <div class="value">${netKw.toFixed(2)} kW</div>
+          </div>
+        `;
+
+        document.getElementById('productionIcon').setAttribute('fill', prodcolor); // Apply color to Production Icon
+        document.getElementById('netPowerIcon').style.setProperty('--stroke-color', netcolor); // Apply color to Net Power Icon
+
+        document.getElementById("systemvolts").innerHTML = `
+          <div class="card">
+            <div class="label">
+              <svg fill="#fbc02d" width="18" height="18" viewBox="0 0 24 24" style="vertical-align: middle;"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
+              System Voltage (L1+L2)</div>
+            <div class="value">${voltageSystem.toFixed(1)} V</div>
+          </div>
+          <div class="card">
+            <div class="label">
+              <svg fill="#fbc02d" width="18" height="18" viewBox="0 0 24 24" style="vertical-align: middle;"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
+              L1 Voltage</div>
+            <div class="value">${voltageL1.toFixed(1)} V</div>
+          </div>
+          <div class="card">
+            <div class="label">
+              <svg fill="#fbc02d" width="18" height="18" viewBox="0 0 24 24" style="vertical-align: middle;"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
+              L2 Voltage</div>
+            <div class="value">${voltageL2.toFixed(1)} V</div>
+          </div>
+        `;
+
+        const maxKw = Math.max(...inverters.map(inv => parseFloat(inv.p_3phsum_kw || 0)));
+        document.getElementById("panels").innerHTML = inverters.map((inv, i) => {
+        const kwRaw = parseFloat(inv.p_3phsum_kw || 0);
+        const kw = kwRaw.toFixed(3);
+        const watt = kw * 1000;
+        const vac = parseFloat(inv.vln_3phavg_v || 0).toFixed(1);
+        const vdc = parseFloat(inv.v_mppt1_v || 0).toFixed(1);
+        const adc = parseFloat(inv.i_mppt1_a || 0).toFixed(2);
+        const tempC = parseFloat(inv.t_htsnk_degc || 0);
+        const tempF = Math.round(tempC * 9/5 + 32);
+      //const bgColor = ((kwRaw <= 0.80 * maxKw) && (kwRaw >= 0.025)) ? '#fff9c4' : '#e0f7fa'; // yellow=low performers, cyan=OK
+        const bgColor = ((kwRaw <= 0.80 * maxKw) && (kwRaw >= 0.025)) ? '#f5f5dc' : '#e0f7fa'; // beige=low performers, cyan=OK
+
+        return `
+         <div class="panel" style="background: ${bgColor};">
+          <strong style="font-size: 1.375rem; font-weight: bold;">${watt} Watts</strong><br/>
+          Panel ${i + 1}<br/>
+          S/N: ${inv.SERIAL}<br/>
+          AC Volt: ${vac}<br/>
+          DC Volt: ${vdc}<br/>
+          DC Amp: ${adc}<br/>
+          🌡️ ${tempC}°C (${tempF}°F)<br/>
+          ✔ ${inv.STATEDESCR}
+         </div>
+        `;
+        }).join("");
+
+        document.getElementById("gateway").textContent = `Gateway: ${gateway?.MODEL}`;
+        document.getElementById("ip").textContent = `Gateway IP: ${IP_ADDR}`;
+        document.getElementById("serial").textContent = `S/N: ${gateway?.SERIAL}`;
+        document.getElementById("hwver").textContent = `HW Vers: ${gateway?.HWVER}`;
+        document.getElementById("swver").textContent = `Firmware: ${gateway?.SWVER}`;
+        document.getElementById("state").textContent = `State: ${gateway?.STATE}`;
+        document.getElementById("memused").textContent = `Mem Used: ${gateway?.dl_mem_used}`;
+        document.getElementById("panid").textContent = `Panel ID: ${gateway?.panid}`;
+        document.getElementById("ctdescr").textContent = `Consumption CT: ${meterC?.subtype}`;
+
+        let parts = updateTime.split(',');
+        let formattedDate = parts[0] + '-' + parts[1] + '-' + parts[2];
+        let formattedTime = parts[3] + ':' + parts[4] + ':' + parts[5];
+        let finalFormattedString = "Last update: " + formattedDate + '  ' + formattedTime + ' UTC';
+
+        document.getElementById("updated").textContent = finalFormattedString;
+      //document.getElementById("updated").textContent = "Last updated: " + updateTime.replace(/,/g, "/").replace(/(\d{2})$/, ":00");
+
+      } catch (e) {
+        console.error("Fetch error:", e);
+        document.getElementById("updated").innerHTML = `
+        <div>Error loading data.</div>
+        <div style="margin-top: 0.5rem; font-size: 0.9rem; color: #b00;">Failed URL: ${URL}</div>
+        `;
+      }
+    }
+
+    fetchData();
+    setInterval(fetchData, REFRESH_INTERVAL);
+  </script>
+</body>
+</html>
