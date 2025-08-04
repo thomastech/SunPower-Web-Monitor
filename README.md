@@ -38,9 +38,13 @@ To retrieve data, a direct Ethernet connection is required. **Wi-Fi cannot be us
 
 Inside the PVS are two Ethernet ports (LAN1 & LAN2) and other RJ45 jacks that **are not Ethernet**. Be cautious and use the correct port!
 
-## LAN1: Dashboard Data
+## LAN Port Descriptions
 
-**LAN1** is the port that enables Dashboard functionality.
+The two Ethernet (LAN) ports have different purposes, as follows:
+
+### LAN1: Dashboard Data
+
+**LAN1** is the Ethernet port that enables Dashboard functionality.
 
 It was originally intended for installer use. Unfortunately, SunPower disabled the built-in PVS Management App. It was a web-based commissioning interface that allowed installers to provision or repair systems. Today, those tasks require a proprietary installer's App.
 
@@ -50,14 +54,12 @@ The Dashboard webpage queries this API using IP address *172.27.153.1* on LAN1. 
 
 > 🔗 Note: The URL *www.sunpowerconsole.com* has been disabled by SunPower. It was an alias for the PVS’s internal nameserver at *172.27.153.1*. You must now use the IP address directly: [http://172.27.153.1](http://172.27.153.1).
 
-## LAN2: Customer Cloud Data
+### LAN2: Customer Cloud Data
 
-The two Ethernet ports have different purposes:
-
-- **LAN2** is typically used to send data to the SunPower cloud via the customer's router. Most systems use Wi-Fi for this, but Ethernet is also supported.
+- **LAN2** is the Ethernet port that sends data to the SunPower cloud via the customer's router. Most systems use Wi-Fi for this, but Ethernet is also supported.
 - This connection enables access to power production and consumption data via the official SunPower app.
 
-However, this project uses a different port for Dashboard data, so LAN2 is **not our concern**.
+However, the Dashboard uses the LAN1 port, so LAN2 is not our concern.
 
 ## Ethernet Cable Connection
 
