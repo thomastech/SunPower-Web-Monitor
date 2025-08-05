@@ -1,9 +1,9 @@
 
 # SunPower Web Monitor
 
-The **PVS Solar Energy Dashboard** is a web-based viewer for monitoring data from your SunPower Solar System. It reports the model and serial number of every provisioned device in the system. Additionally, it displays power production, power consumption, and mains voltages. Each panel in your solar array also reports its DC volts, DC amps, and Microinverter AC voltages.
+The **PVS Solar Energy Dashboard** is a web-based viewer for monitoring data from a SunPower Solar System that uses a PVS5/PVS6 Gateway. It reports the model and serial number of every provisioned device in the system. Additionally, it displays power production, power consumption, and mains voltages. Each panel in your solar array also reports its DC volts, DC amps, and Microinverter AC voltages.
 
-> ⚠️ Note: Battery storage status is **not** currently supported. The author plans to add this feature in the future—once a generous anonymous donor pays for the installation of a *SunVault* at the author’s residence. If you know such a person, please invite them to check out this project!
+> ⚠️ Note: Battery storage status is **not** currently supported. This feature will be added in the future—once a generous anonymous donor pays for the installation of a *SunVault* at the author’s residence. If you know such a person, please invite them to check out this project!
 
 > 🔗 From this point forward, the PVS Solar Energy Dashboard will simply be referred to as the **Dashboard**.
 
@@ -44,30 +44,31 @@ The two Ethernet (LAN) ports have different purposes, as follows:
 
 ### LAN1: Dashboard Data
 
-**LAN1** is the Ethernet port that enables Dashboard functionality.
+- **LAN1** is the Ethernet port that enables Dashboard functionality.
 
-It was originally intended for installer use. Unfortunately, SunPower disabled the built-in PVS Management App. It was a web-based commissioning interface that allowed installers to provision or repair systems. Today, those tasks require a proprietary installer's App.
+- It was originally intended for installer use. Unfortunately, SunPower disabled the built-in PVS Management App. It was a web-based commissioning interface that allowed installers to provision or repair systems. Today, those tasks require a proprietary installer's App.
 
-Thankfully, the LAN1 **API** remains functional.
+- Thankfully, the LAN1 **API** remains functional.
 
-The Dashboard webpage queries this API using IP address *172.27.153.1* on LAN1. This is a private network address, separated from the customer’s home network, which is why a direct Ethernet connection is required.
+- The Dashboard webpage queries this API using IP address *172.27.153.1* on LAN1. This is a private network address, separated from the customer’s home network, which is why a direct Ethernet connection is required.
 
 > 🔗 Note: The URL *www.sunpowerconsole.com* has been disabled by SunPower. It was an alias for the PVS’s internal nameserver at *172.27.153.1*. Your browser must now use the IP address as the URL ([http://172.27.153.1](http://172.27.153.1)). Only http is accepted, https is not supported.
 
 ### LAN2: Customer Cloud Data
 
 - **LAN2** is the Ethernet port that sends data to the SunPower cloud via the customer's router. Most systems use Wi-Fi for this, but Ethernet is also supported.
+
 - This connection enables access to power production and consumption data via the official SunPower app.
 
-However, the Dashboard uses the LAN1 port, so LAN2 is not our concern.
+- The Dashboard uses the LAN1 port, so LAN2 is not our concern.
 
 ## Ethernet Cable Connection
 
-Rather than repeating installation steps here, please refer to the official PVS installation guides for information on where to connect the LAN1 Ethernet cable:
+Rather than repeating installation steps here, please refer to the official PVS Residential Installation *Quick Start Guide* (**QSG**) for information on where to connect the LAN1 Ethernet cable:
 
-- **PVS6**: [Click to view](resources/PVS6_Installation1.pdf)
-- **PVS5**: [Click to view](resources/PVS5_Installation1.pdf)
-> 🔗 Note: The latest PVS6 hardware version will require a USB-to-Ethernet adapter (Dongle). Details are discussed in the PVS6 installation manual.
+- **PVS6 QSG**: [[Click to view]](resources/PVS6_Installation1.pdf)
+- **PVS5 QSG**: [[Click to view]](resources/PVS5_Installation1.pdf)
+> 🔗 Note: The latest PVS6 hardware version will require a USB-to-Ethernet adapter (Dongle). Details are discussed in the PVS6 QSG.
 
 
 ## Ethernet Test
@@ -196,9 +197,12 @@ The *System Information* section provides the following information:
 ### 3.
 **Q.** Why doesn't the Dashboard show daily KWH or past history? It would be useful to see how much power was produced and/or consumed each day.
 
-**A.** It sounds like you need to check out the [SunPower add-on for Home Assistant](https://github.com/krbaker/hass-sunpower).
+**A.** It sounds like you need to check out the SunPower add-on for Home Assistant. [[Click to view]](https://github.com/krbaker/hass-sunpower)
+
 
 ### 4.
 **Q.** I cannot connect to the VPS. I've tried everything. Help.
 
-**A.** Check again and confirm your PC's WiFi is turned off. If you are using a USB-to-Ethernet "Dongle" on your PVS6 then confirm it is an approved choice. The PVS6 installation manual shows the USB Dongle models that can be used.
+**A.** Check again and confirm your PC's WiFi is turned off. If you are using a USB-to-Ethernet "Dongle" on your PVS6 then confirm it is an approved choice.
+
+<img style="padding-right: 15px; padding-bottom: 5px;" align="left" src="images/dongle1.png" width="275">The [PVS6 Residential Installation Quick Start Guide](resources/PVS6_Installation1.pdf) discusses the USB Dongle models that should be used (see Technical Notification section).
