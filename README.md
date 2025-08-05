@@ -1,7 +1,7 @@
 
 # SunPower Web Monitor
 
-The **PVS Solar Energy Dashboard** is a web-based viewer for monitoring data from your SunPower system. It reports the model and serial number of every provisioned device in the system. Additionally, it displays power production, power consumption, and mains voltages. Each panel in your solar array also reports its DC volts, DC amps, and microinverter AC voltages.
+The **PVS Solar Energy Dashboard** is a web-based viewer for monitoring data from your SunPower Solar System. It reports the model and serial number of every provisioned device in the system. Additionally, it displays power production, power consumption, and mains voltages. Each panel in your solar array also reports its DC volts, DC amps, and Microinverter AC voltages.
 
 > ⚠️ Note: Battery storage status is **not** currently supported. The author plans to add this feature in the future—once a generous anonymous donor pays for the installation of a *SunVault* at the author’s residence. If you know such a person, please invite them to check out this project!
 
@@ -11,7 +11,7 @@ The **PVS Solar Energy Dashboard** is a web-based viewer for monitoring data fro
 
 The 2024 SunPower bankruptcy created a great deal of uncertainty for system owners. Warranty support for purchased systems was terminated, leaving repair costs in the hands of affected customers. This situation prompted the creation of the Dashboard project, which offers system information not available in the SunPower App.
 
-As of the Dashboard’s creation date (July 2025), the bankruptcy situation is still evolving. For example, the company name recently reverted (from SunStrong back to SunPower), but pre-bankruptcy customers have not seen restoration of their original warranty. Hopefully, this will change in the future, but things look bleak.
+As of the Dashboard’s creation date (July 2025), the bankruptcy situation has not improved much for system  owners. SunStrong, the new company's name, recently rebranded as "SunPower." But despite the return of the SunPower name, pre-bankruptcy customers have not seen restoration of their original warranty.
 
 ## Dashboard Security
 
