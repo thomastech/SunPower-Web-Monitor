@@ -12,7 +12,7 @@ Connecting the PVS to your network isn’t a basic plug-and-play setup. That’s
 
 <img style="padding-right: 15px; padding-bottom: 5px;" align="right" src="../images/mango1.jpg" width="150">
 
-Some solutions involve using a Raspberry Pi flashed with OpenWrt (a popular router OS). But a simpler option is to purchase a *GL.iNet GL-MT300N-V2* (**Mango**) mini VPN router. It’s affordable, extremely compact, and pre-loaded with OpenWrt.
+Some solutions involve using a Raspberry Pi flashed with OpenWrt (a popular router OS). But a simpler option is to purchase a [GL.iNet GL-MT300N-V2 Mango](https://www.amazon.com/GL-iNET-GL-MT300N-V2-Repeater-300Mbps-Performance/dp/B073TSK26W) router. It’s affordable, extremely compact, and pre-loaded with OpenWrt.
 
 So that’s the router solution we’ll cover here.
 

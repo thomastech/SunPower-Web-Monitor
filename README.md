@@ -21,7 +21,7 @@ The Dashboard does not use the cloud to access your SunPower system. All communi
 
 In addition to displaying useful real-time data, the Dashboard can help with system troubleshooting. Failing components can be identified without climbing on the roof or deciphering JSON-formatted files. For example, locating the serial number of a faulty microinverter is the first step toward obtaining a warranty replacement from Enphase.
 
-However, the Dashboard **cannot** be used to commission a SunPower system or provision new devices. As of 2024, those tasks require the proprietary PVS Management App and approval from SunPower or SunStrong.
+However, the Dashboard **cannot** be used to commission a SunPower system or provision new devices. As of 2024, those tasks require the proprietary PVS Management App and SunPower's authorization to use it.
 
 > 📝If your goal is to integrate your SunPower system into a home automation system, such as *Home Assistant* (HA), then keep in mind that this project is NOT needed for that. However, the Dashboard can certainly be used while you prepare your HA integration.
 
@@ -124,7 +124,7 @@ The *Power Performance* section provides the following information:
 
 **Consumption:** The instantaneous power (KW) consumption.
 
-**Net Power:** The amount of net power (KW). It is power produced (Solar Output) minus power consumed. A negative value (red circle icon) indicates that more energy is being consumed than produced. The difference would need to come from the POCO (Power Company) or a SunVault. A green circle icon indicates that there is excess power which can be sent to the POCO or stored in a SunVault.
+**Net Power:** The amount of net power (KW). It is power produced (Solar Output) minus power consumed. A negative value (red circle icon) indicates that more energy is being consumed than produced. The difference would need to come from the POCO (Power Company) or a SunVault. A green circle icon indicates that there is excess power which can be exported to the POCO or stored in a SunVault.
 
 ---
 
@@ -203,6 +203,6 @@ The *System Information* section provides the following information:
 ### 4.
 **Q.** I cannot connect to the VPS. I've tried everything. Help.
 
-**A.** Check again and confirm your PC's WiFi is turned off. If you are using a USB-to-Ethernet "Dongle" on your PVS6 then confirm it is an approved choice.
+**A.** Check again and confirm your PC's WiFi is turned off. Do NOT use https in your URL, it MUST be http. If you are using a USB-to-Ethernet "Dongle" on your PVS6 then confirm it is an approved choice.
 
 <img style="padding-right: 15px; padding-bottom: 5px;" align="left" src="images/dongle1.png" width="275">The [PVS6 Residential Installation Quick Start Guide](resources/PVS6_Installation1.pdf) discusses the USB Dongle models that should be used (see Technical Notification section).
