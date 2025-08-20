@@ -1,10 +1,10 @@
 <!--
-File:   solar_dashboard.html
-Author: ThomasB
-Vers:   1.2
-Origin: Jul-29-2025
-Update: Aug-12-2025
-github: https://github.com/thomastech
+File:    solar_dashboard.html
+Author:  ThomasB
+Version: 1.3
+Origin:  Jul-29-2025
+Update:  Aug-15-2025
+github:  https://github.com/thomastech
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -36,6 +36,7 @@ github: https://github.com/thomastech
     .section-title {
       font-size: 1.2rem;
       margin-bottom: 0.5rem;
+      font-weight: bold;
       color: #333;
     }
     .dashboard {
@@ -128,6 +129,11 @@ github: https://github.com/thomastech
   </section>
 
   <section>
+    <div class="section-title">Power Factor</div>
+    <div class="dashboard" id="powerfactor"></div>
+  </section>
+
+  <section>
     <div class="section-title">Inverter Panel Grid</div>
     <div class="panels" id="panels"></div>
   </section>
@@ -179,6 +185,10 @@ github: https://github.com/thomastech
         //const productionKw = parseFloat(meterP?.p_3phsum_kw || 0);
         const productionKw = parseFloat((meterP?.p_3phsum_kw || 0) <= 0.005 ? 0 : (meterP?.p_3phsum_kw || 0));
         const consumptionKw = parseFloat((meterC?.p_3phsum_kw || 0) <= 0.005 ? 0 : (meterC?.p_3phsum_kw || 0));
+        const rawPowerFactorP = Math.abs(parseFloat(meterP?.tot_pf_rto || 0)) < 0.1 ? 0 : parseFloat(meterP?.tot_pf_rto || 0);
+        const rawPowerFactorC = parseFloat(meterC?.tot_pf_rto || 0);
+        const powerFactorP = rawPowerFactorP * 100;
+        const powerFactorC = rawPowerFactorC * 100;
         const netKw = productionKw - consumptionKw;
         const lifetimeKwh = parseFloat(meterP?.net_ltea_3phsum_kwh || 0);
         const voltageSystem = parseFloat(meterC?.v12_v || 0);
@@ -217,22 +227,40 @@ github: https://github.com/thomastech
 
         document.getElementById("systemvolts").innerHTML = `
           <div class="card">
-            <div class="label">
-              <svg fill="#fbc02d" width="18" height="18" viewBox="0 0 24 24" style="vertical-align: middle;"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
-              System Voltage (L1+L2)</div>
+            <svg fill="#fbc02d" width="18" height="18" viewBox="0 0 24 24" style="vertical-align: middle;"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
+            <div class="label">System Voltage (L1+L2)</div>
             <div class="value">${voltageSystem.toFixed(1)} V</div>
           </div>
           <div class="card">
-            <div class="label">
-              <svg fill="#fbc02d" width="18" height="18" viewBox="0 0 24 24" style="vertical-align: middle;"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
-              L1 Voltage</div>
+            <svg fill="#fbc02d" width="18" height="18" viewBox="0 0 24 24" style="vertical-align: middle;"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
+            <div class="label">L1 Voltage</div>
             <div class="value">${voltageL1.toFixed(1)} V</div>
           </div>
           <div class="card">
-            <div class="label">
-              <svg fill="#fbc02d" width="18" height="18" viewBox="0 0 24 24" style="vertical-align: middle;"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
-              L2 Voltage</div>
+            <svg fill="#fbc02d" width="18" height="18" viewBox="0 0 24 24" style="vertical-align: middle;"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
+            <div class="label">L2 Voltage</div>
             <div class="value">${voltageL2.toFixed(1)} V</div>
+          </div>
+        `;
+
+        document.getElementById("powerfactor").innerHTML = `
+          <div class="card">
+              <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 12c2-6 6-6 8 0s6 6 12 0" />
+                <path d="M2 12c2-6 6-6 8 0s6 6 12 0" transform="translate(2,0)"/>
+                <path d="M6 12 A3 3 0 0 1 8 10.5" />
+              </svg>
+            <div class="label">Production</div>
+            <div class="value">${powerFactorP.toFixed(1)}%</div>
+          </div>
+          <div class="card">
+            <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 12c2-6 6-6 8 0s6 6 12 0" />
+                <path d="M2 12c2-6 6-6 8 0s6 6 12 0" transform="translate(2,0)"/>
+                <path d="M6 12 A3 3 0 0 1 8 10.5" />
+              </svg>
+            <div class="label">Consumption</div>
+            <div class="value">${powerFactorC.toFixed(1)}%</div>
           </div>
         `;
 

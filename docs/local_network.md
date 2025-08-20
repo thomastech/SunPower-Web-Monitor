@@ -48,7 +48,7 @@ Your full URL will look like this:
 *file:///D:/SunPower/dashboard.html?ip=192.168.1.194:8080*
 
 
-After the Dashboad is confirmed working, save the URL as a bookmark in your browser. Now you don’t have to manually edit it each time. That's it, you're all set!
+After the Dashboard is confirmed working, save the URL as a bookmark in your browser. Now you don’t have to manually edit it each time. That's it, you're all set!
 
 ---
 

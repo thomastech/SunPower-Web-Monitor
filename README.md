@@ -100,8 +100,8 @@ On a Windows PC the Dashboard can be launched by double-clicking the file (or sh
 
 Here's a screenshot.
 
-<a href="images/dashboard1.png" target="_blank" style="text-align: center; display: block;">
-  <img src="images/dashboard1.png" width="600" style="padding: 5px 15px 0 15px; display: block; margin: 0 auto;">
+<a href="images/dashboard1b.png" target="_blank" style="text-align: center; display: block;">
+  <img src="images/dashboard1b.png" width="600" style="padding: 5px 15px 0 15px; display: block; margin: 0 auto;">
   <div style="font-size: 14px; color: #fff; text-align: center;"><strong>Click for Larger View</strong></div>
 </a>
 </br>
@@ -137,6 +137,18 @@ The *System Voltage* section provides the following information:
 **L1 Voltage:** The L1 mains voltage. Nominal is 120VAC.
 
 **L2 Voltage:** The L2 mains voltage. Nominal is 120VAC.
+
+---
+
+### Power Factor
+
+The *Power Factor* section reports the ratio of *real power* versus *apparent power*. Ideal values will be close to 100%.
+
+A low percentage indicates how much deviation that current and voltage are out of phase. This is an unwanted situation that can occur with highly reactive loads from some household devices. The PVS cannot measure extremely low power factors; Inaccurate power usage may be reported.
+
+**Production:** The power factor value measured at the production side of the solar array's inverters.
+
+**Consumption:** The power factor value measured at the consumption side (power loads).
 
 ---
 
@@ -180,7 +192,7 @@ The *System Information* section provides the following information:
 
 **Panel ID:** SunPower's customer identification number.
 
-**Consumption CT:** The subtype assigned to the consumption Current Transformer (CT). Consumption monitoring is disabled if it reports "NOT_USED."
+**Consumption CT:** The subtype assigned to the consumption Current Transformer (CT). This value may be helpful if consumption wattage is missing or inaccurate.
 
 ## [FAQ](faq)
 
@@ -206,3 +218,5 @@ The *System Information* section provides the following information:
 **A.** Check again and confirm your PC's WiFi is turned off. Do NOT use https in your URL, it MUST be http. If you are using a USB-to-Ethernet "Dongle" on your PVS6 then confirm it is an approved choice.
 
 <img style="padding-right: 15px; padding-bottom: 5px;" align="left" src="images/dongle1.png" width="275">The [PVS6 Residential Installation Quick Start Guide](resources/PVS6_Installation1.pdf) discusses the USB Dongle models that should be used (see Technical Notification section).
+
+Lastly, there is a rare chance that the PVS issued a different IP than the expected 172.27.153.1 address. For example, it may have used 172.27.152.1 or something similar. Review the properties of the PC's network settings to see what was assigned.
