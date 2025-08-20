@@ -84,10 +84,10 @@
 ## Using curl (built into Windows 10+)
 
 Example: Get power production
-curl -X GET "http://sunpowerconsole.com/cgi-bin/dl_cgi/network/powerProduction"
+curl -X GET "http://172.27.153.1/cgi-bin/dl_cgi/network/powerProduction"
 
 Example: Set grid voltage to 240V
-curl -X POST "http://sunpowerconsole.com/cgi-bin/dl_cgi/grid/voltage" ^
+curl -X POST "http://172.27.153.1/cgi-bin/dl_cgi/grid/voltage" ^
      -H "Content-Type: application/json" ^
      -d "{\"grid_voltage\": 240}"
 
@@ -96,10 +96,10 @@ curl -X POST "http://sunpowerconsole.com/cgi-bin/dl_cgi/grid/voltage" ^
 ## Using PowerShell Invoke-RestMethod
 
 Example: Get device list
-Invoke-RestMethod -Uri "http://sunpowerconsole.com/cgi-bin/dl_cgi/devices/list" -Method GET
+Invoke-RestMethod -Uri "http://172.27.153.1/cgi-bin/dl_cgi/devices/list" -Method GET
 
 Example: Start commissioning
-Invoke-RestMethod -Uri "http://sunpowerconsole.com/cgi-bin/dl_cgi/commissioning/start" `
+Invoke-RestMethod -Uri "http://172.27.153.1/cgi-bin/dl_cgi/commissioning/start" `
   -Method POST -ContentType "application/json"
 
 <br>
