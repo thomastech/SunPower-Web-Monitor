@@ -41,7 +41,7 @@ def devices():
         if not sess:
             sess = requests.Session()
             try:
-                r = sess.get(f"https://{ip}/auth?login", auth=(user, passwd), verify=False, timeout=8)
+                r = sess.get(f"https://{ip}/auth?login", auth=(user, passwd), verify=False, timeout=30)
             except Exception as e:
                 return Response(f"Login error: {e}", status=500)
             if r.status_code != 200 or not sess.cookies:
@@ -51,7 +51,7 @@ def devices():
 
         # fetch device list with stored cookie/session
         try:
-            r = sessions[ip].get(f"https://{ip}/cgi-bin/dl_cgi/devices/list", verify=False, timeout=8)
+            r = sessions[ip].get(f"https://{ip}/cgi-bin/dl_cgi/devices/list", verify=False, timeout=30)
         except Exception as e:
             return Response(f"Fetch error: {e}", status=500)
 
@@ -59,12 +59,12 @@ def devices():
         if r.status_code in (401, 403):
             try:
                 new_sess = requests.Session()
-                r2 = new_sess.get(f"https://{ip}/auth?login", auth=(user, passwd), verify=False, timeout=8)
+                r2 = new_sess.get(f"https://{ip}/auth?login", auth=(user, passwd), verify=False, timeout=30)
             except Exception as e:
                 return Response(f"Re-login error: {e}", status=500)
             if r2.status_code == 200 and new_sess.cookies:
                 sessions[ip] = new_sess
-                r = sessions[ip].get(f"https://{ip}/cgi-bin/dl_cgi/devices/list", verify=False, timeout=8)
+                r = sessions[ip].get(f"https://{ip}/cgi-bin/dl_cgi/devices/list", verify=False, timeout=30)
             else:
                 return Response(f"Authentication failed (HTTP {r2.status_code}).", status=403)
 
@@ -73,7 +73,7 @@ def devices():
     # No credentials provided -> assume older firmware: try HTTP direct (no auth)
     else:
         try:
-            r = requests.get(f"http://{ip}/cgi-bin/dl_cgi/devices/list", timeout=8)
+            r = requests.get(f"http://{ip}/cgi-bin/dl_cgi/devices/list", timeout=30)
         except Exception as e:
             return Response(f"Fetch error: {e}", status=500)
 
