@@ -1,0 +1,14 @@
+services:
+  solar-monitor:
+    build: .
+    container_name: sunpower-monitor
+    ports:
+      - "${HOST_PORT:-8080}:5000"
+    restart: unless-stopped
+    # healthcheck hits the root endpoint
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5000/')"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 10s

@@ -1,0 +1,7 @@
+.git
+docs/
+images/
+resources/
+*.md
+LICENSE
+*.pdf
